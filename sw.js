@@ -1,5 +1,5 @@
 // Service worker: la app funciona sin internet (los datos viven en el celular y se sincronizan cuando hay red).
-const VERSION = 'midinero-v1';
+const VERSION = 'midinero-v2';
 const ARCHIVOS = ['./', './index.html', './app.css', './app.js', './manifest.webmanifest',
   './icon-192.png', './icon-512.png'];
 

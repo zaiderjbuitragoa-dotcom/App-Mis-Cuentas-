@@ -215,7 +215,9 @@ async function sync(manual) {
     if (generarAutomaticos()) programarSync();
     if (manual) aviso('Sincronizado con Google Sheets ✓');
   } catch (e) {
-    ui.sync = 'err'; ui.syncMsg = 'Error: ' + (e.message || e); if (manual) aviso(ui.syncMsg);
+    ui.sync = 'err'; ui.syncMsg = 'Error: ' + (e.message || e);
+    if (/permisos|authoriz|SpreadsheetApp/i.test(ui.syncMsg)) ui.syncMsg = 'Falta autorizar el script: en Apps Script ejecuta "configurar", acepta permisos y publica una Nueva versión.';
+    if (manual) aviso(ui.syncMsg);
   } finally { sincronizando = false; render(); }
 }
 function pintarEstado() { const e = $('#syncdot'); if (e) { e.className = 'dot ' + ui.sync; e.title = ui.syncMsg; } }
