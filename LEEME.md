@@ -6,8 +6,8 @@ Funciona sin internet, se instala en el celular y guarda todo en **tu Google She
 1. Crea una hoja nueva en Google Sheets (ej. "Mi Dinero").
 2. Extensiones → Apps Script. Pega el contenido de `apps-script/Code.gs`
    (en Configuración del proyecto activa "Mostrar appsscript.json" y pega también `appsscript.json`).
-3. Cambia `CLAVE` por una frase larga y privada (mín. 8 caracteres). Opcional: `CORREOS`.
-4. Ejecuta la función `configurar` y acepta los permisos.
+3. `ID_HOJA` y `CLAVE` ya vienen puestos en el archivo. Opcional: `CORREOS`.
+4. Ejecuta la función `configurar`: acepta los permisos y crea las 4 hojas de una vez.
 5. Implementar → Nueva implementación → Aplicación web → Ejecutar como: **Yo** · Acceso: **Cualquier usuario**.
    Copia la URL que termina en `/exec`.
    (Si cambias el código luego: Implementar → Administrar → editar → Nueva versión.)
