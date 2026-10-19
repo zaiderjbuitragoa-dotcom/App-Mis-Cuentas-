@@ -43,6 +43,10 @@ const TIPOS_CUENTA = { ahorros: 'Cuenta de ahorros', corriente: 'Cuenta corrient
 const ENLACES = [['PSE', 'https://www.pse.com.co/persona'], ['Nequi', 'https://www.nequi.com.co'], ['Daviplata', 'https://www.daviplata.com'],
   ['Bancolombia', 'https://www.bancolombia.com'], ['Davivienda', 'https://www.davivienda.com']];
 
+const CONEXION = {
+  url: 'https://script.google.com/macros/s/AKfycbz2xLYaLAf7KIR_u1GKrYTTF1XwUoftCc1PVLzTZdy9TnTYxb0ukL55T2S8xRhvjhTH/exec',
+  clave: 'MiDinero-xMOAM-Ks8Zt-Y4aNR-5zRjp'
+};
 let DB = {}, CFG = {};
 const ui = { tab: 'inicio', mes: hoy().slice(0, 7), filtro: 'todos', sync: 'idle', syncMsg: '', fm: null };
 
@@ -51,6 +55,11 @@ function cargar() {
   try { CFG = JSON.parse(localStorage.getItem(LS_CFG)) || {}; } catch { CFG = {}; }
   COLS.forEach(k => { DB[k] = Array.isArray(DB[k]) ? DB[k] : []; });
   CFG = Object.assign({ url: '', clave: '', usuario: '', desde: 0, ultimaSync: 0, pin: null, notif: false, notifDia: '' }, CFG);
+  // Conexión interna: cualquier aparato que abra la app queda conectado a la hoja sin escribir nada.
+  if (!CFG.url) CFG.url = CONEXION.url;
+  if (!CFG.clave) CFG.clave = CONEXION.clave;
+  // Una sola vez por aparato: reenvía todo lo local y vuelve a bajar todo lo de la hoja.
+  if (CFG.v !== 3) { COLS.forEach(k => DB[k].forEach(x => { if (x.u > 0) x.dirty = 1; })); CFG.desde = 0; CFG.v = 3; }
   CATS.forEach(c => { if (!DB.cat.some(x => x.id === c.id)) DB.cat.push({ ...c }); });
 }
 function persistir() {
