@@ -631,9 +631,24 @@ document.addEventListener('change', async e => {
 });
 window.addEventListener('online', () => { if (CFG.url) sync(false); });
 
+/* Enlace de configuración: abrir  …/App-Mis-Cuentas-/#u=<URL /exec>&k=<CLAVE>  deja la app lista en ese aparato.
+   Va en el fragmento (#), que nunca se envía a ningún servidor, y se borra de la barra al leerlo. */
+function configDesdeEnlace() {
+  if (!location.hash || location.hash.length < 5) return;
+  try {
+    const p = new URLSearchParams(location.hash.slice(1)), u = p.get('u') || '', k = p.get('k') || '';
+    if (!u && !k) return;
+    if (/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(u) && k.length >= 8) {
+      CFG.url = u; CFG.clave = k; CFG.desde = 0; persistir();
+      setTimeout(() => aviso('Google Sheets configurado ✓'), 400);
+    }
+    history.replaceState(null, '', location.pathname + location.search);
+  } catch {}
+}
+
 /* ───────── Arranque ───────── */
 function iniciar() {
-  cargar(); generarAutomaticos(); persistir(); render();
+  cargar(); configDesdeEnlace(); generarAutomaticos(); persistir(); render();
   if (CFG.pin) pantallaPin('abrir', 'Mi Dinero bloqueado');
   if (CFG.url && CFG.clave) sync(false);
   avisarVencimientos();
